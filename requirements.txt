@@ -1,0 +1,2 @@
+band =K_band/
+path =/data/esanchez/RRL_in_Ionized_Jets_from_Rosero2016_Emmanuel_Sanchez/Rosero_2016_all_data/TAR/
