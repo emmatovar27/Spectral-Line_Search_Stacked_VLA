@@ -8,13 +8,13 @@ Before running the python program we need to define two variables inside the pyt
 Open the **requirements.txt** and edit the band and path variables. Change the values of band and path for strings with the band of your observations and the path where you store your calibrate data.
  
 
-* band = ''
-* path = ''
+* band = ' '
+* path = ' '
 
 Example: 
 
 * band='K_band/'
-* path='/data/esanchez/Rosero_2016_all_data/TAR/'+band
+* path='/data/esanchez/Rosero_2016_all_data/TAR/'
 
 # Splatalogue - Files
 [Splatalogue](https://www.cv.nrao.edu/php/splat/index.php)
