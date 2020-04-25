@@ -26,7 +26,7 @@ Range: All Records
 
 The next step will be run the main script from casa interface using the command
 ```
-execfile('PublicEdition_Script_RRL.py')
+execfile('main_script.py')
 ```
 ## Source Selection
 
