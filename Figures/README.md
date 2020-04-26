@@ -5,7 +5,7 @@
 - Anaconda 
 
 - Libraries:
--- numpy and matplolib
+- numpy and matplolib
 
 
 ### 
