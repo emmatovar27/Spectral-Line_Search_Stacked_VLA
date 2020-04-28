@@ -22,11 +22,6 @@ Example:
 
 The path is the folder that contains your *.ms* observations.  
 
-# Splatalogue - Files
-[Splatalogue](https://www.cv.nrao.edu/php/splat/index.php)
-
-After the initial variables you must download the files from Splatalogue and saved it in the 'Species' folder. The file must be download in '.tsv' format following the this two parameters. Field Separator: Tab
-Range: All Records
 
 # Execution
 
@@ -52,3 +47,11 @@ You must selected the file with the frequencies of interested. You must type nam
 
 The program will use the default  settings for each source that you selected. The output of the images will be located at /Output/'band'/'Source Name'
 
+
+# Splatalogue - Files
+[Splatalogue](https://www.cv.nrao.edu/php/splat/index.php)
+
+After the initial variables you must download the files from Splatalogue and saved it in the 'Species' folder. The file must be download in '.tsv' format following the this two parameters. 
+Field Separator: Tab
+
+Range: All Records
