@@ -2,6 +2,10 @@
 
 # Installation and Configuration 
 
+**This version of the program runs in python 2.X and CASA 5.X**
+
+The program will be updated for the python 3.X and CASA 6.X
+
 Extract the files in the path. 
 
 Before running the python program we need to define two variables inside the python script. 
@@ -15,6 +19,8 @@ Example:
 
 * band='K_band/'
 * path='/data/esanchez/Rosero_2016_all_data/TAR/'
+
+The path is the folder that contains your *.ms* observations.  
 
 # Splatalogue - Files
 [Splatalogue](https://www.cv.nrao.edu/php/splat/index.php)
