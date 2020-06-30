@@ -5,23 +5,45 @@ import csv
 import imp
 import sys
 sys.path.append(os.getcwd())
-import  stacking_module
+import stacking_module
+
+#'IRAS20126_4104.ms'
+mylines =[]
+parameters_dict = {}                            
+with open ('parameters.txt', 'r') as myfile:
+    for myline in myfile:
+        if myline.startswith('##'):
+            dict_temp ={}
+            mylines =[]
+            group = myline.replace('#','').rstrip('\n').strip(' ')
+            parameters_dict[group]={}
+
+        elif not myline.startswith('#'):
+            key,val = myline.strip('\n').replace(' ', '').split('=')
+            if "[" in val:
+                ls = val.strip('[]').replace('"', '').replace(' ', '').split(',')
+                val =ls
+            if val =="True" or val == "False":
+                val = bool(val)
+            mylines.append(( key,val ))
+            parameters_dict[group].update(mylines )
+
+print(parameters_dict)
+
+####### Variables ####### 
+
+band=parameters_dict['path']['band']
+path=parameters_dict['path']['source_path'] 
+f =  parameters_dict['visibilities']['field']
 
 
-mylines = []                            
-with open ('requirements.txt', 'rt') as myfile: .
-    for myline in myfile:               
-        mylines.append(myline.rstrip('\n').split('='))         
-#print(mylines[0][1],mylines[1][1])                          
 
 
-band=mylines[0][1]#'K_band/'
-path=mylines[1][1]+band #'/data/esanchez/RRL_in_Ionized_Jets_from_Rosero2016_Emmanuel_Sanchez/Rosero_2016_all_data/TAR/'+band
 path_analysis=os.getcwd()+'/'
 out_path=path_analysis+'/Output/'+band
 species_path=path_analysis+'/Species'
-sources= []
 
+sources= parameters_dict['visibilities']['vis']
 
 try:
     os.mkdir(out_path)
@@ -37,22 +59,10 @@ except OSError:
     print ("\nCreation of the directory %s failed is already created" %species_path )
 else:  
     print ("\nSuccessfully created the directory %s " % species_path)
-
-folders=os.listdir(path)
-folders=sorted(folders)
-print "\nSelect the source or sources: \n"
-print folders
-
-while True:
-    input_ms=raw_input("\nSelect the source: ")
-    if input_ms=="":
-        break
-    sources.append(input_ms)
-print("\n Total # of sources is {}".format(len(sources)))
 print(sources)
 
-#Generate listobs for the data using CASA
 
+#Generate listobs for the data using CASA
 def list():
     default(listobs)
     global vis ,verbose,overwrite,listfile
@@ -114,7 +124,6 @@ def ploting(fields):
         showgui=False
         inp(plotms)
         go(plotms)
-        #os.system("mv -u " + plotfile +' '+ new_path)
 
 
 def select_file():
@@ -131,17 +140,18 @@ def select_file():
     Select=raw_input("\nWrite the name of the Species file to review: ") 
     return Select
 
-def create_freq(sel_mole):
+def create_freq(sel_mole, energy_cut):
     spw_found=[]
     os.chdir(new_path)
     files = glob.glob("*.txt")
     os.chdir(path_analysis)
     Select=sel_mole
+    print files
     for spw in files:  # Extract the frequencies
          if os.stat(new_path+'/'+spw).st_size > 100:
              i=np.genfromtxt(new_path+'/'+spw,comments='#',usecols=(0))
-             min=np.amin(i)
-             max=np.amax(i)
+             min_v=np.amin(i)
+             max_v=np.amax(i)
              with open(path_analysis+'Species/'+Select) as Species_file:
                  Reader=csv.reader(Species_file,delimiter='\t')
                  next(Reader)#Skip the Blank line
@@ -151,8 +161,8 @@ def create_freq(sel_mole):
                      specie=row[0]
                      quatum_trans=row[3]
                      energy=float(row[7])
-                     if min <= rest_freq <= max and energy<500.0:
-                         print("SPW {} Quatum {} Rest_freq: {} GHz Energy {} K".format(spw,quatum_trans,rest_freq,energy))
+                     if min_v <= rest_freq <= max_v and energy<=energy_cut :
+                         print("SPW: {} Quatum {} Rest_freq: {} GHz Energy {} K".format(spw,quatum_trans,rest_freq,energy))
                          spw_found.append([spw,min,max,1,specie,quatum_trans,rest_freq])
                          spw_n=spw[3:-4]
                          print("&{0:s}&\t&{1:s}\t &{2:2.6f}&\t {3:3.3f}".format(specie,spw_n,rest_freq,energy))
@@ -190,6 +200,7 @@ def create_img(spws,fields,mySDM):
     global gridder  
     global interactive
     global phasecenter
+    global stokes
     for i in range(len(spws)):
         spw_to_do= str(spws[i][0])[:-4] +'-' +spws[i][4]+'-'+spws[i][5]
         spw_to_do=spw_to_do.replace('&','')
@@ -202,43 +213,47 @@ def create_img(spws,fields,mySDM):
         images_array.append(spw_to_do + '.image') # Create the array with the SPW to stacking
         default(tclean)
         vis=path+mySDM
-        imagename=new_path+spw_to_do
-        datacolumn='corrected'
+        imagename=new_path+spw_to_do #+'_stokes_V'
+        datacolumn=parameters_dict['cube_gen']['datacolumn'] #'corrected'
         if band=="C_band/":
             spw=spw_number #+':5~50'
         else:
             spw=spw_number#+ ':5~60'
         field=fields
-        specmode='cube'  
+        specmode=parameters_dict['cube_gen']['specmode']#'cube'  
         #width='30km/s' 
         restfreq = spw_rest_freq
         #start='550km/s' 
         #outframe='LSRK' 
-        threshold='0.5mJy' # 0.4 '0.05mJy'  
-        imsize=[1000] 
-        cell=['0.035arcsec']  
-        niter= 10000 
-        deconvolver='hogbom'  
-        weighting= 'briggs' 
-        robust=0.5 
-        pbcor=True  
-        pblimit=0.2  
-        restoringbeam='common'         
-        interactive=False
-        #phasecenter ='J2000 19:28:55.58 17.52.03.11'
+        threshold= parameters_dict['cube_gen']['threshold']  #'0.5mJy' # 0.4 '0.05mJy'  
+        imsize= [int(parameters_dict['cube_gen']['imsize'])] # [1000]
+        cell= parameters_dict['cube_gen']['cell'] #['0.035arcsec']  
+        niter=  int(parameters_dict['cube_gen']['niter'])
+        deconvolver=parameters_dict['cube_gen']['deconvolver']#'hogbom'  
+        weighting= parameters_dict['cube_gen']['weighting'].strip() #'briggs' 
+        robust=float(parameters_dict['cube_gen']['robust']) # 0.5 
+        pbcor=bool(parameters_dict['cube_gen']['pbcor']) # True  
+        pblimit=float(parameters_dict['cube_gen']['pblimit']) #0.2  
+        restoringbeam=parameters_dict['cube_gen']['restoringbeam'] #'common'         
+        interactive= bool(parameters_dict['cube_gen']['interactive'] ) #False
+        stokes=parameters_dict['cube_gen']['stokes'] #'I'
+        #phasecenter =parameters_dict['cube_gen']['phasecenter']
+        #'J2000 19h29m33s +18d00m54s'
+        #'J2000 19:28:55.58 17.52.03.11'
         #'J2000 19:29:33.52 18.00.54.20'
         #'J2000 18h21m09s -14d31m48s'
         #'J2000 19h29m33s +18d00m54s'
         #'J2000 19h29m33s +18d00m54s'
         # 19282 'J2000 19h30m23s +18d20m26.0s'
         go_img= 'N'#raw_input("Create image Y/N: ")
-        if not os.path.exists(new_path+spw_to_do+'.residual'): #or go_img.upper()=='Y':
+        #if '9(2)-9' in spw_to_do:
+        if not os.path.exists(new_path+spw_to_do+'.image'):
             print("Did not Found -> Start Image")
             inp(tclean)
-            go(tclean)
-            max_min(imagename+'.image')
+            #go(tclean)
+            #max_min(imagename+'.image')
         else:
-            max_min(imagename+'.image')
+            #max_min(imagename+'.image')
             print "Exist"
 
     return images_array
@@ -254,13 +269,10 @@ def max_min(image):
         outfile=image+'.moments'
         inp(immoments)
         go(immoments)
-        print "Min and Max done"
+        print("Min and Max done")
     else:
         print("Min and Max done")
     
-
-
-
     
 ##########################################
 
@@ -286,22 +298,9 @@ def main():
         header,foot,f_header,f_foot=lines()
         
         temp=np.genfromtxt(new_path+"log.txt",skip_header=header,skip_footer=foot,usecols=(0))
-        fields=np.genfromtxt(new_path+"log.txt",skip_header=f_header,skip_footer=f_foot,usecols=(0))
-        fields_n=np.genfromtxt(new_path+"log.txt",skip_header=f_header,skip_footer=f_foot, dtype=None,usecols=(2))
-        f='0'
-        try:
-            len_field=len(fields)
-            print "Source\t | Source Name"
-            for j in range(len(fields)):
-                print("{}\t | {} ".format(fields[j], fields_n[j]))
 
-            f=str(raw_input("Select the number of the source: "))
-        except TypeError:
-            print('Only one source in ms')
-        print('Spectral Windows in the Source: ')
-
-        print temp
-
+        print('Spw to observed ', temp)
+        
         #plots of freq vs amp in txt files
         plots=glob.glob(new_path+'*.txt*')
         if len(plots)<2:
@@ -309,10 +308,13 @@ def main():
 
         #Function to find acording to the species
 
-        sel_file= select_file() #'CH3OH.tsv'#'OH.tsv'# 'OH.tsv' 
-        array_spws=create_freq(sel_file)
+        sel_file= parameters_dict['Frequency_File']['molecule']  #select_file() #'CH3OH.tsv'#'OH.tsv'# 'OH.tsv' 
+        energy_cut = float(parameters_dict['Frequency_File']['upper_energy'])
+
+        array_spws=create_freq(sel_file,energy_cut)
         if array_spws==[]:
             next
+        
         global new_path
         try:  
             new_path=path_analysis+'Output/'+band+mySDM_Folder+sel_file[:-4]+'/'
@@ -321,6 +323,8 @@ def main():
             print ("Creation of the directory %s failed is already created" % new_path)
         else:  
             print ("Successfully created the directory %s " % new_path)
+
+
         #Create images of the previous findings 
         images_cube=create_img(array_spws,f,mySDM)
         if sel_file=='HalphaRRL.tsv':
@@ -337,6 +341,7 @@ def main():
             images_cube=temp2
             print images_cube
             images_cube.append(new_path)
+
             #Stacking Cubes
             execfile("stacking_module.py",globals())
             stack(images_cube)
