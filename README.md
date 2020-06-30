@@ -19,13 +19,13 @@ The variables are separetate in the following sections:
  
 * Visibilities
 
- - vis 
-
-* File export
-
-* Frequency
-
-* Image generation
+  - vis = list of visibilities 1 or multiple visibilities e.g [vis1,vis2...] 
+  
+  - field =  index of the field from (0,1,2....n)
+   
+* Frequency Files
+    - molecule = The file with the frequencies
+    - Upper limit of the energy level measure in Kelvin 
  
 
 # Execution
