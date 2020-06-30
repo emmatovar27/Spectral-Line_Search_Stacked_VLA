@@ -8,40 +8,33 @@ The program will be updated for the python 3.X and CASA 6.X
 
 Extract the files in the path. 
 
-Before running the python program we need to define two variables inside the python script. 
-Open the **requirements.txt** and edit the band and path variables. Change the values of band and path for strings with the band of your observations and the path where you store your calibrate data.
+Before running the python program we need to define all the variables inside the python script. 
+
+Open the **parameters.txt** and edit each individual variable.
+
+The variables are separetate in the following sections: 
+
+ Path: 
+source_path = Referencere path of where the *ms* files are storage.
  
+ Visibilities
 
-* band = ' '
-* path = ' '
+ vis 
 
-Example: 
+File export
 
-* band='K_band/'
-* path='/data/esanchez/Rosero_2016_all_data/TAR/'
+Frequency
 
-The path is the folder that contains your *.ms* observations.  
-
+Image generation
+ 
 
 # Execution
 
 The next step will be run the main script from casa interface using the command
+
 ```
 execfile('main_script.py')
 ```
-## Source Selection
-
-The Script will ask for which sources or source do you want to run through. You have to enter the name of the source.
-
-## Fields Selection
-
-If the source has more than one field you can selected base on the number of the field.  
-
-## Frequency Selection
-
-### If you have multiples files in the **Species** folder:
- 
-You must selected the file with the frequencies of interested. You must type name of the file.
 
 ### Imaging generation
 
