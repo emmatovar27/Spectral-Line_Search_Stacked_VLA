@@ -24,7 +24,7 @@ The variables are separetate in the following sections:
   - field =  index of the field from (0,1,2....n)
    
 * Frequency Files
-    - molecule = The file with the frequencies
+    - molecule = Type the name file with the frequencies
     - Upper limit of the energy level measure in Kelvin 
  
 
