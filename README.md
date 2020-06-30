@@ -15,7 +15,7 @@ Open the **parameters.txt** and edit each individual variable.
 The variables are separetate in the following sections: 
 
 * Path: 
-** source_path = Referencere path of where the *ms* files are storage.
+ * source_path = Referencere path of where the *ms* files are storage.
  
 * Visibilities
 
