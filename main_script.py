@@ -95,7 +95,7 @@ def lines():
         footer=cnt-anten        
         return spw_line,footer,field,foot2
 
-def ploting(fields):
+def ploting(fields,temp):
     #Create the plotms and move to the Output folder
     global vis
     global xaxis
@@ -306,7 +306,7 @@ def main():
         #plots of freq vs amp in txt files
         plots=glob.glob(new_path+'*.txt*')
         if len(plots)<2:
-            ploting(f)
+            ploting(f,temp)
 
         #Function to find acording to the species
 
