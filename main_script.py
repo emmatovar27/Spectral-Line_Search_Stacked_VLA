@@ -63,7 +63,7 @@ print(sources)
 
 
 #Generate listobs for the data using CASA
-def list():
+def list(mySDM):
     default(listobs)
     global vis ,verbose,overwrite,listfile
     vis=path+mySDM
@@ -213,7 +213,7 @@ def create_img(spws,fields,mySDM):
         images_array.append(spw_to_do + '.image') # Create the array with the SPW to stacking
         default(tclean)
         vis=path+mySDM
-        imagename=new_path+spw_to_do #+'_stokes_V'
+        imagename=new_path+spw_to_do +'_stokes_V'
         datacolumn=parameters_dict['cube_gen']['datacolumn'] #'corrected'
         if band=="C_band/":
             spw=spw_number #+':5~50'
@@ -235,7 +235,7 @@ def create_img(spws,fields,mySDM):
         pbcor=bool(parameters_dict['cube_gen']['pbcor']) # True  
         pblimit=float(parameters_dict['cube_gen']['pblimit']) #0.2  
         restoringbeam=parameters_dict['cube_gen']['restoringbeam'] #'common'         
-        interactive= bool(parameters_dict['cube_gen']['interactive'] ) #False
+        interactive= False
         stokes=parameters_dict['cube_gen']['stokes'] #'I'
         #phasecenter =parameters_dict['cube_gen']['phasecenter']
         #'J2000 19h29m33s +18d00m54s'
@@ -246,12 +246,12 @@ def create_img(spws,fields,mySDM):
         #'J2000 19h29m33s +18d00m54s'
         # 19282 'J2000 19h30m23s +18d20m26.0s'
         go_img= 'N'#raw_input("Create image Y/N: ")
-        #if '9(2)-9' in spw_to_do:
-        if not os.path.exists(new_path+spw_to_do+'.image'):
+        if '9(2)-9' in spw_to_do:
+        #if not os.path.exists(new_path+spw_to_do+'.image'):
             print("Did not Found -> Start Image")
             inp(tclean)
-            #go(tclean)
-            #max_min(imagename+'.image')
+            go(tclean)
+            max_min(imagename+'.image')
         else:
             #max_min(imagename+'.image')
             print "Exist"
@@ -278,6 +278,7 @@ def max_min(image):
 
 # Execute_Script
 def main():
+    global mySDM
     for i in sources:
         mySDM = i
         mySDM_Folder=str(mySDM[0:-3])+ band 
@@ -293,7 +294,7 @@ def main():
 
         #Creation of the listobs
         if not os.path.exists(new_path+'log.txt'):
-            list()
+            list(mySDM)
     
         header,foot,f_header,f_foot=lines()
         
