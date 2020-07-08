@@ -8,7 +8,7 @@ import csv
 #out_path='/data/esanchez/RRL_in_Ionized_Jets_from_Rosero2016_Emmanuel_Sanchez/ANALYSIS/Output/C_band'
 
 #new_path=out_path+'/g53.11_mm2K_band/'
-#export_path=new_path+'new_stack/'
+
 def channel(cube_input):
     global imstat,default
     new_path=cube_input[-1]
@@ -35,8 +35,8 @@ def channel(cube_input):
         print("RMS Cube:{0:3.3e} ".format(b.std()))
         print "Mean {0:2.3e} Std {1:2.3e} Lower limit {2:2.3e} Upper Limit {3:2.3e} rms {4:2.3e}".format(flux_mean,flux_std,lower_lim,upper_lim,rms_mean)
         channel_conti=''
-        num=len(stats['rms']-5)
-        for i in range(num):# Number of channels
+        num=len(stats['rms']-5)# Number of channels
+        for i in range(num):
             chan_stats=imstat(imagename=new_path+cube,  box='50,50,300,300' ,axes=[0,1],chans=str(i))
             if len(chan_stats['rms'])==0:
                 pass
