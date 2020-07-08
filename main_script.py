@@ -7,7 +7,6 @@ import sys
 sys.path.append(os.getcwd())
 import stacking_module
 
-#'IRAS20126_4104.ms'
 mylines =[]
 parameters_dict = {}                            
 with open ('parameters.txt', 'r') as myfile:
@@ -54,7 +53,7 @@ else:
 
 try:
     os.mkdir(species_path)
-    os.system("mv Halpha.tsv "+species_path)
+    #os.system("mv Halpha.tsv "+species_path)
 except OSError:
     print ("\nCreation of the directory %s failed is already created" %species_path )
 else:  
@@ -279,11 +278,13 @@ def max_min(image):
 # Execute_Script
 def main():
     global mySDM
+    global new_path
     for i in sources:
         mySDM = i
         mySDM_Folder=str(mySDM[0:-3])+ band 
 
         #Create Folder for the plotms Outputs
+        os.mkdir(out_path)
         try:  
             new_path=path_analysis+'Output/'+band+mySDM_Folder
             os.mkdir(new_path)
