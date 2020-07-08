@@ -39,7 +39,7 @@ f =  parameters_dict['visibilities']['field']
 
 
 path_analysis=os.getcwd()+'/'
-out_path=path_analysis+'/Output/'+band
+out_path=path_analysis+'/Output/'
 species_path=path_analysis+'/Species'
 
 sources= parameters_dict['visibilities']['vis']
@@ -284,9 +284,9 @@ def main():
         mySDM_Folder=str(mySDM[0:-3])+ band 
 
         #Create Folder for the plotms Outputs
-        os.mkdir(out_path)
+        
         try:  
-            new_path=path_analysis+'Output/'+band+mySDM_Folder
+            new_path=path_analysis+'Output/'+mySDM_Folder
             os.mkdir(new_path)
         except OSError:  
             print ("Creation of the directory %s failed is already created" % new_path)
