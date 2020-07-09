@@ -244,15 +244,15 @@ def create_img(spws,fields,mySDM):
         #'J2000 19h29m33s +18d00m54s'
         #'J2000 19h29m33s +18d00m54s'
         # 19282 'J2000 19h30m23s +18d20m26.0s'
-        go_img= 'N'#raw_input("Create image Y/N: ")
-        if '9(2)-9' in spw_to_do:
-        #if not os.path.exists(new_path+spw_to_do+'.image'):
+        #go_img= 'N'#raw_input("Create image Y/N: ")
+        #if '9(2)-9' in spw_to_do:
+        if not os.path.exists(new_path+spw_to_do+'.image'):
             print("Did not Found -> Start Image")
             inp(tclean)
             go(tclean)
             max_min(imagename+'.image')
         else:
-            #max_min(imagename+'.image')
+            max_min(imagename+'.image')
             print "Exist"
 
     return images_array
