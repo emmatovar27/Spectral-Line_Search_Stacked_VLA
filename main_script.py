@@ -212,7 +212,7 @@ def create_img(spws,fields,mySDM):
         images_array.append(spw_to_do + '.image') # Create the array with the SPW to stacking
         default(tclean)
         vis=path+mySDM
-        imagename=new_path+spw_to_do +'_stokes_V'
+        imagename=new_path+spw_to_do 
         datacolumn=parameters_dict['cube_gen']['datacolumn'] #'corrected'
         if band=="C_band/":
             spw=spw_number #+':5~50'
