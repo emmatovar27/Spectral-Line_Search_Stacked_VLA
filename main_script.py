@@ -319,7 +319,7 @@ def main():
         
         global new_path
         try:  
-            new_path=path_analysis+'Output/'+band+mySDM_Folder+sel_file[:-4]+'/'
+            new_path=path_analysis+'Output/'+mySDM_Folder+sel_file[:-4]+'/'
             os.mkdir(new_path)
         except OSError:
             print ("Creation of the directory %s failed is already created" % new_path)
