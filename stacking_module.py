@@ -9,7 +9,7 @@ import csv
 
 #new_path=out_path+'/g53.11_mm2K_band/'
 
-def rm_continuum(cube_input):
+def chans_rm_continuum(cube_input):
     global imstat,default
     new_path=cube_input[-1]
     del(cube_input[-1])
@@ -21,7 +21,7 @@ def rm_continuum(cube_input):
     for cube in cube_input:
         array_channel=[]
         print new_path+cube
-        stats=imstat(imagename=new_path+cube,  box='50,50,300,300' )
+        stats=imstat(imagename=new_path+cube,  box='50,50,300,300', axes=[0,1])
         a =np.array(stats['rms'])
         b =np.array(stats['flux'])
         c=np.array(stats['mean'])
@@ -38,7 +38,7 @@ def rm_continuum(cube_input):
         channel_conti=''
         num=len(stats['rms']-5)# Number of channels
         for i in range(num):
-            chan_stats=imstat(imagename=new_path+cube,  box='50,50,300,300' ,chans=str(i))
+            chan_stats=imstat(imagename=new_path+cube,  box='50,50,300,300',axes=[0,1] ,chans=str(i))
             if len(chan_stats['rms'])==0:
                 pass
                 chans=i+1
@@ -71,7 +71,7 @@ def rm_continuum(cube_input):
 
 def stack(cube_input):
     new_path=cube_input[-1]
-    channels=rm_continuum(cube_input)
+    channels=chans_rm_continuum(cube_input)
     del(cube_input[-1])
     global default
     global imagename
@@ -88,6 +88,7 @@ def stack(cube_input):
     global fitorder
     global axes
     ## Remove continuum: this is better if done in the UV plane before tclean
+    cube =[]
     for i in range(len(cube_input)):
         spw_to=cube_input[i]
         if not os.path.exists(new_path+spw_to+'.NC'):
