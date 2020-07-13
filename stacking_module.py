@@ -20,6 +20,7 @@ def channel(cube_input):
     channel_join=''
     for cube in cube_input:
         array_channel=[]
+        print new_path+cube
         stats=imstat(imagename=new_path+cube,  box='50,50,300,300' )
         a =np.array(stats['rms'])
         b =np.array(stats['flux'])
