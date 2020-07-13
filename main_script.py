@@ -329,6 +329,9 @@ def main():
 
         #Create images of the previous findings 
         images_cube=create_img(array_spws,f,mySDM)
+
+        #Stacking Hydrogen RRLs
+
         if sel_file=='HalphaRRL.tsv':
             temp=[]
             temp2=[]

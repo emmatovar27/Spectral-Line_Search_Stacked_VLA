@@ -9,7 +9,7 @@ import csv
 
 #new_path=out_path+'/g53.11_mm2K_band/'
 
-def channel(cube_input):
+def rm_continuum(cube_input):
     global imstat,default
     new_path=cube_input[-1]
     del(cube_input[-1])
@@ -71,8 +71,8 @@ def channel(cube_input):
 
 def stack(cube_input):
     new_path=cube_input[-1]
+    channels=rm_continuum(cube_input)
     del(cube_input[-1])
-    channels=channel(cube_input)
     global default
     global imagename
     global linefile
