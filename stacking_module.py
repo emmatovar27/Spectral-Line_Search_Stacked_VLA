@@ -20,7 +20,7 @@ def channel(cube_input):
     channel_join=''
     for cube in cube_input:
         array_channel=[]
-        stats=imstat(imagename=new_path+cube,  box='50,50,300,300' ,axes=[0,1])
+        stats=imstat(imagename=new_path+cube,  box='50,50,300,300' )
         a =np.array(stats['rms'])
         b =np.array(stats['flux'])
         c=np.array(stats['mean'])
@@ -37,7 +37,7 @@ def channel(cube_input):
         channel_conti=''
         num=len(stats['rms']-5)# Number of channels
         for i in range(num):
-            chan_stats=imstat(imagename=new_path+cube,  box='50,50,300,300' ,axes=[0,1],chans=str(i))
+            chan_stats=imstat(imagename=new_path+cube,  box='50,50,300,300' ,chans=str(i))
             if len(chan_stats['rms'])==0:
                 pass
                 chans=i+1
