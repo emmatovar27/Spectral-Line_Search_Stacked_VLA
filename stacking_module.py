@@ -28,7 +28,7 @@ def chans_rm_continuum(cube_input):
         rms_mean=a.mean()
         rms_std=a.std()
         flux_mean=b.mean()
-        flux_std= b.std()
+        flux_std= 3 * a.mean()
         lower_lim=flux_mean-flux_std
         upper_lim=flux_mean+flux_std
         print cube
