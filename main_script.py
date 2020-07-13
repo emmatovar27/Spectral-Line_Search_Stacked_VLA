@@ -346,6 +346,7 @@ def main():
 
             #Stacking Cubes
             execfile("stacking_module.py",globals())
+            print images_cube
             stack(images_cube)
 
 
