@@ -17,7 +17,6 @@ def chans_rm_continuum(cube_input):
     channels_use=[]
     chans=0
     last=''
-    channel_join=''
     for cube in cube_input:
         array_channel=[]
         print new_path+cube
@@ -37,6 +36,7 @@ def chans_rm_continuum(cube_input):
         print "Mean {0:2.3e} Std {1:2.3e} Lower limit {2:2.3e} Upper Limit {3:2.3e} rms {4:2.3e}".format(flux_mean,flux_std,lower_lim,upper_lim,rms_mean)
         channel_conti=''
         num=len(stats['rms']-5)# Number of channels
+        channel_join = ''
         for i in range(num):
             chan_stats=imstat(imagename=new_path+cube,  box='50,50,300,300',axes=[0,1] ,chans=str(i))
             if len(chan_stats['rms'])==0:
@@ -46,7 +46,7 @@ def chans_rm_continuum(cube_input):
             else:
                 #print "Flux {0:3.3e}".format(chan_stats['flux'][0])
                 #print "Lower Lim {0:2.3e} , Upper Lim {1:2.3e} RMS {2:2.3e}".format(lower_lim,upper_lim,chan_stats['rms'][0])
-            #print("RMS {0:3.3e} Channel {1:1d}".format(chan_stats['rms'][0],i))
+                #print("RMS {0:3.3e} Channel {1:1d}".format(chan_stats['rms'][0],i))
                 if chan_stats['flux'][0]>lower_lim and chan_stats['flux'][0]<upper_lim:
                     pass
                 else:
