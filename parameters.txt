@@ -18,7 +18,7 @@ specmode=cube
 #start=550km/s 
 #outframe=LSRK 
 threshold=0.5mJy   
-imsize=1000 
+imsize=1000
 cell=["0.035arcsec"]  
 niter= 10000 
 deconvolver=hogbom  
@@ -30,3 +30,5 @@ restoringbeam=common
 interactive=False
 stokes = I 
 #phasecenter ='J2000 19:28:55.58 17.52.03.11'
+### Stacking ### 
+stack_bool = True

@@ -27,15 +27,13 @@ with open ('parameters.txt', 'r') as myfile:
             mylines.append(( key,val ))
             parameters_dict[group].update(mylines )
 
-print(parameters_dict)
+
 
 ####### Variables ####### 
 
 band=parameters_dict['path']['band']
 path=parameters_dict['path']['source_path'] 
 f =  parameters_dict['visibilities']['field']
-
-
 
 
 path_analysis=os.getcwd()+'/'
@@ -46,21 +44,15 @@ sources= parameters_dict['visibilities']['vis']
 
 try:
     os.mkdir(out_path)
+    os.mkdir(species_path)
 except OSError:
     print ("\nCreation of the directory %s failed is already created" %out_path )
-else:  
-    print ("\nSuccessfully created the directory %s " %out_path)  
-
-try:
-    os.mkdir(species_path)
-    #os.system("mv Halpha.tsv "+species_path)
-except OSError:
     print ("\nCreation of the directory %s failed is already created" %species_path )
 else:  
+    print ("\nSuccessfully created the directory %s " %out_path)  
     print ("\nSuccessfully created the directory %s " % species_path)
-print(sources)
 
-
+print('Visibilities to explorer: {}'.format(sources))
 #Generate listobs for the data using CASA
 def list(mySDM):
     default(listobs)
@@ -233,7 +225,7 @@ def create_img(spws,fields,mySDM):
         robust=float(parameters_dict['cube_gen']['robust']) # 0.5 
         pbcor=bool(parameters_dict['cube_gen']['pbcor']) # True  
         pblimit=float(parameters_dict['cube_gen']['pblimit']) #0.2  
-        restoringbeam=parameters_dict['cube_gen']['restoringbeam'] #'common'         
+        restoringbeam=parameters_dict['cube_gen']['restoringbeam'] #'common' 
         interactive= False
         stokes=parameters_dict['cube_gen']['stokes'] #'I'
         #phasecenter =parameters_dict['cube_gen']['phasecenter']
@@ -330,9 +322,9 @@ def main():
         #Create images of the previous findings 
         images_cube=create_img(array_spws,f,mySDM)
 
-        #Stacking Hydrogen RRLs
+        #Stacking detected lines
 
-        if sel_file=='HalphaRRL.tsv':
+        if bool(parameters_dict[' Stackin']['stack_bool']):
             temp=[]
             temp2=[]
             for cube in images_cube:
