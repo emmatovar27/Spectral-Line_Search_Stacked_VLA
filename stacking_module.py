@@ -2,12 +2,7 @@ import os
 import glob
 import numpy as np
 import csv
-#cube=[]
-#path_analysis='/data/esanchez/RRL_in_Ionized_Jets_from_Rosero2016_Emmanuel_Sanchez/ANALYSIS'
-#out_path='/data/esanchez/RRL_in_Ionized_Jets_from_Rosero2016_Emmanuel_Sanchez/ANALYSIS/Output/K_band'
-#out_path='/data/esanchez/RRL_in_Ionized_Jets_from_Rosero2016_Emmanuel_Sanchez/ANALYSIS/Output/C_band'
 
-#new_path=out_path+'/g53.11_mm2K_band/'
 
 def chans_rm_continuum(cube_input):
     global imstat,default

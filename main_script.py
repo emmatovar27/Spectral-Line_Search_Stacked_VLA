@@ -324,7 +324,7 @@ def main():
 
         #Stacking detected lines
 
-        if bool(parameters_dict[' Stackin']['stack_bool']):
+        if bool(parameters_dict['Stacking']['stack_bool']):
             temp=[]
             temp2=[]
             for cube in images_cube:
