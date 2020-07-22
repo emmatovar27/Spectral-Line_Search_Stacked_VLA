@@ -328,6 +328,11 @@ def main():
             temp=[]
             temp2=[]
             for cube in images_cube:
+                stats=imstat(imagename=new_path+cube,  box='50,50,300,300', axes=[0,1])
+                if len(stats['rms'])>256:
+                    images_cube.remove(cube)
+                    print('Removed from the stacking %s' %cube)
+                else: 
                  temp.append(int(cube[cube.find('(')+1:cube.find(')')]))
             temp.sort(reverse=True)
             temp=[str(x) for x in temp]
@@ -336,12 +341,12 @@ def main():
                     if n in name:
                         temp2.append(name)
             images_cube=temp2
-            print images_cube
+            print( images_cube)
             images_cube.append(new_path)
-
+            
             #Stacking Cubes
             execfile("stacking_module.py",globals())
-            print images_cube
+            #print images_cube
             stack(images_cube)
 
 
