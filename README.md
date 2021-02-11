@@ -4,7 +4,7 @@
 
 **This version of the program runs in python 2.X and CASA 5.X**
 
-The program will be updated for the python 3.X and CASA 6.X
+The program will be updated for python 3.X and CASA 6.X
 
 Extract the files in the path. 
 
