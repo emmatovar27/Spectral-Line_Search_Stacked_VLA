@@ -2,8 +2,7 @@
 path_to_MS =/data/project_1/TAR/K_band/
 #
 ### visibilities ### 
-vis = [18089-1723.2.ms]
-#[18089-1723.2.ms,g34.43-mm1.ms,18517+0437.ms,18533+0414.ms,18566+0408.ms,19012+0536.ms,g53.25-mm4.ms,IRAS20126_4104.ms]
+vis = ['vis1.ms','vis2.ms',...]
 field = 0
 #
 ### plotms  ### 
