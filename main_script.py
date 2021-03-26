@@ -18,6 +18,7 @@ with open ('parameters.txt', 'r') as myfile:
             parameters_dict[group]={}
 
         elif not myline.startswith('#'):
+            print(myline.strip('\n'))
             key,val = myline.strip('\n').replace(' ', '').split('=')
             if "[" in val:
                 ls = val.strip('[]').replace('"', '').replace(' ', '').split(',')
@@ -27,12 +28,12 @@ with open ('parameters.txt', 'r') as myfile:
             mylines.append(( key,val ))
             parameters_dict[group].update(mylines )
 
-
+print(parameters_dict)
 
 ####### Variables ####### 
 
-band=parameters_dict['path']['band']
-path=parameters_dict['path']['source_path'] 
+#band=parameters_dict['path']['band']
+path=parameters_dict['path']['path_to_MS'] 
 f =  parameters_dict['visibilities']['field']
 
 
@@ -54,7 +55,7 @@ else:
 
 print('Visibilities to explorer: {}'.format(sources))
 #Generate listobs for the data using CASA
-def list(mySDM):
+def list(mySDM,new_path):
     default(listobs)
     global vis ,verbose,overwrite,listfile
     vis=path+mySDM
@@ -66,7 +67,7 @@ def list(mySDM):
 
 
 #Creating the SPW's array
-def lines():
+def lines(new_path):
     with open(new_path+"log.txt",'r') as log_file:
         line=log_file.readline()
         cnt=1
@@ -80,14 +81,14 @@ def lines():
                 field=cnt+1
             if 'Spectral Windows' in line:
                 spw=cnt
-                print spw
+                print( spw)
             line = log_file.readline()
             cnt += 1
         foot2=cnt-spw
         footer=cnt-anten        
         return spw_line,footer,field,foot2
 
-def ploting(fields,temp):
+def ploting(fields,temp,new_path):
     #Create the plotms and move to the Output folder
     global vis
     global xaxis
@@ -125,19 +126,19 @@ def select_file():
     if len(species)==0:
         return
         print("You need a file from Splatalogue DataBase")
-    for i in species:
-        print i
+    for specie in species:
+        print(specie)
     os.chdir(path_analysis)
     Select=raw_input("\nWrite the name of the Species file to review: ") 
     return Select
 
-def create_freq(sel_mole, energy_cut):
+def create_freq(sel_mole, energy_cut,new_path):
     spw_found=[]
     os.chdir(new_path)
     files = glob.glob("*.txt")
     os.chdir(path_analysis)
     Select=sel_mole
-    print files
+    print(files)
     for spw in files:  # Extract the frequencies
          if os.stat(new_path+'/'+spw).st_size > 100:
              i=np.genfromtxt(new_path+'/'+spw,comments='#',usecols=(0))
@@ -163,7 +164,7 @@ def create_freq(sel_mole, energy_cut):
     os.chdir(path_analysis)
     return spw_found
 
-def create_img(spws,fields,mySDM):
+def create_img(spws,fields,mySDM,new_path):
     #Global Variables
     images_array=[]
     global vis
@@ -245,7 +246,7 @@ def create_img(spws,fields,mySDM):
             max_min(imagename+'.image')
         else:
             max_min(imagename+'.image')
-            print "Exist"
+            print("Exist")
 
     return images_array
    
@@ -266,11 +267,11 @@ def max_min(image):
     
     
 ##########################################
-
+global new_path
 # Execute_Script
 def main():
     global mySDM
-    global new_path
+    
     for i in sources:
         mySDM = i
         mySDM_Folder=str(mySDM[0:-3])+ band 
@@ -287,9 +288,9 @@ def main():
 
         #Creation of the listobs
         if not os.path.exists(new_path+'log.txt'):
-            list(mySDM)
+            list(mySDM,new_path)
     
-        header,foot,f_header,f_foot=lines()
+        header,foot,f_header,f_foot=lines(new_path)
         
         temp=np.genfromtxt(new_path+"log.txt",skip_header=header,skip_footer=foot,usecols=(0))
 
@@ -298,18 +299,17 @@ def main():
         #plots of freq vs amp in txt files
         plots=glob.glob(new_path+'*.txt*')
         if len(plots)<2:
-            ploting(f,temp)
+            ploting(f,temp,new_path)
 
         #Function to find acording to the species
 
         sel_file= parameters_dict['Frequency_File']['molecule']  #select_file() #'CH3OH.tsv'#'OH.tsv'# 'OH.tsv' 
         energy_cut = float(parameters_dict['Frequency_File']['upper_energy'])
 
-        array_spws=create_freq(sel_file,energy_cut)
+        array_spws=create_freq(sel_file,energy_cut,new_path)
         if array_spws==[]:
             next
-        
-        global new_path
+      
         try:  
             new_path=path_analysis+'Output/'+mySDM_Folder+sel_file[:-4]+'/'
             os.mkdir(new_path)
@@ -320,7 +320,7 @@ def main():
 
 
         #Create images of the previous findings 
-        images_cube=create_img(array_spws,f,mySDM)
+        images_cube=create_img(array_spws,f,mySDM,new_path)
 
         #Stacking detected lines
 
@@ -352,3 +352,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

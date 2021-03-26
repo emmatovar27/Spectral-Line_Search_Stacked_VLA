@@ -24,10 +24,10 @@ def chans_rm_continuum(cube_input):
         flux_std= b.std()
         lower_lim=flux_mean-flux_std
         upper_lim=flux_mean+flux_std
-        print cube
+        print (cube)
         print("RMS Cube:{0:3.3e} ".format(6*a.mean()))
         print("RMS Cube:{0:3.3e} ".format(b.std()))
-        print "Mean {0:2.3e} Std {1:2.3e} Lower limit {2:2.3e} Upper Limit {3:2.3e} rms {4:2.3e}".format(flux_mean,flux_std,lower_lim,upper_lim,rms_mean)
+        print( "Mean {0:2.3e} Std {1:2.3e} Lower limit {2:2.3e} Upper Limit {3:2.3e} rms {4:2.3e}".format(flux_mean,flux_std,lower_lim,upper_lim,rms_mean))
         channel_conti=''
         num=len(stats['rms']-5)# Number of channels
         channel_join = ''
@@ -47,7 +47,7 @@ def chans_rm_continuum(cube_input):
                     channs_end=i-1
                     if chans<channs_end:
                         channel_conti =str(chans)+'~'+str(channs_end)
-                        print channel_conti
+                        print( channel_conti)
                         #print str(i)+" Out limits" 
                         chans=i+1
                         array_channel.append(channel_conti)
@@ -66,6 +66,7 @@ def chans_rm_continuum(cube_input):
 def stack(cube_input):
     new_path=cube_input[-1]
     channels =chans_rm_continuum(cube_input)
+    del(cube_input[-1])
     global default
     global imagename
     global linefile
@@ -155,7 +156,7 @@ def export_image(img_name):
     while True:
         folder=glob.glob(path_conti)
         for i in folder:
-            print i
+            print( i)
         select= raw_input('\nSelect Folder: ')
         if '.image' in select:
             img=select
@@ -178,7 +179,7 @@ def sub_images():
     files = glob.glob("*.image")
     for f in files:
         if "image." not in f:
-            print f
+            print (f)
             stats=imstat(imagename=new_path+f,  box='50,50,300,300' ,axes=[0,1])
             a =np.array(stats['rms'])
             num_chans=len(a)
