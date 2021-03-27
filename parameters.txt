@@ -2,7 +2,7 @@
 path_to_MS =/data/project_1/TAR/K_band/
 #
 ### visibilities ### 
-vis = ['vis1.ms','vis2.ms',...]
+vis = [vis1.ms,vis2.ms,...]
 field = 0
 #
 ### plotms  ### 
@@ -10,13 +10,13 @@ avgtime = 1e10
 #
 #
 ### Frequency_File ### 
-#Upper Energy is in Kelvin
 molecule = CH3OH.tsv
+#Upper Energy is in Kelvin
 upper_energy=2e4
 #
 #
 ### Stacking ### 
-stack_bool = False
+stack_boolean = False
 #
 ### cube_gen ### 
 datacolumn= corrected

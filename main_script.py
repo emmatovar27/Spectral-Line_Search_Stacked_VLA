@@ -110,7 +110,7 @@ def ploting(fields,temp,new_path):
         spw =str(i)
         avgtime ='1.0e10'        #  Average over time (blank = False, otherwise value in
         avgbaseline = True        #  Average over all baselines (mutually exclusive with
-        plotfile=new_path+'spw'+ str(i) +'.txt'
+        plotfile=new_path+'/spw'+ str(i) +'.txt'
         expformat='txt'
         overwrite=True
         showgui=False
@@ -274,7 +274,7 @@ def main():
     
     for i in sources:
         mySDM = i
-        mySDM_Folder=str(mySDM[0:-3])+ band 
+        mySDM_Folder=str(mySDM[0:-3])  
 
         #Create Folder for the plotms Outputs
         
@@ -324,7 +324,7 @@ def main():
 
         #Stacking detected lines
 
-        if bool(parameters_dict['Stacking']['stack_bool']):
+        if bool(parameters_dict['Stacking']['stack_boolean']):
             temp=[]
             temp2=[]
             for cube in images_cube:
