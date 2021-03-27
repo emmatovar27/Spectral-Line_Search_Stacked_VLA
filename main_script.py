@@ -286,12 +286,12 @@ def main():
             print ("Successfully created the directory %s " % new_path)
 
         #Creation of the listobs
-        if not os.path.exists(new_path+'log.txt'):
+        if not os.path.exists(new_path+'/log.txt'):
             list(mySDM,new_path)
     
         header,foot,f_header,f_foot=lines(new_path)
         
-        temp=np.genfromtxt(new_path+"log.txt",skip_header=header,skip_footer=foot,usecols=(0))
+        temp=np.genfromtxt(new_path+"/log.txt",skip_header=header,skip_footer=foot,usecols=(0))
 
         print('Spw to observed ', temp)
         
