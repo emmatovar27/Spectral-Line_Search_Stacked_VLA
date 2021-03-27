@@ -60,7 +60,7 @@ def list(mySDM,new_path):
     global vis ,verbose,overwrite,listfile
     vis=path+mySDM
     verbose=False
-    listfile=new_path+'log.txt'
+    listfile=new_path+'/log.txt'
     overwrite=True
     inp(listobs)
     go(listobs)
@@ -207,10 +207,9 @@ def create_img(spws,fields,mySDM,new_path):
         vis=path+mySDM
         imagename=new_path+spw_to_do 
         datacolumn=parameters_dict['cube_gen']['datacolumn'] #'corrected'
-        if band=="C_band/":
-            spw=spw_number #+':5~50'
-        else:
-            spw=spw_number#+ ':5~60'
+       
+        spw=spw_number #+':5~50'
+        
         field=fields
         specmode=parameters_dict['cube_gen']['specmode']#'cube'  
         #width='30km/s' 
@@ -308,10 +307,10 @@ def main():
 
         array_spws=create_freq(sel_file,energy_cut,new_path)
         if array_spws==[]:
-            next
+            break
       
         try:  
-            new_path=path_analysis+'Output/'+mySDM_Folder+sel_file[:-4]+'/'
+            new_path=path_analysis+'Output/'+mySDM_Folder+'/'+sel_file[:-4]+'/'
             os.mkdir(new_path)
         except OSError:
             print ("Creation of the directory %s failed is already created" % new_path)
@@ -320,6 +319,7 @@ def main():
 
 
         #Create images of the previous findings 
+
         images_cube=create_img(array_spws,f,mySDM,new_path)
 
         #Stacking detected lines
