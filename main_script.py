@@ -68,7 +68,7 @@ def list(mySDM,new_path):
 
 #Creating the SPW's array
 def lines(new_path):
-    with open(new_path+"log.txt",'r') as log_file:
+    with open(new_path+"/log.txt",'r') as log_file:
         line=log_file.readline()
         cnt=1
         while line:
