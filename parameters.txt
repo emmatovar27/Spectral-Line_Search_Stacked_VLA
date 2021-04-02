@@ -1,13 +1,9 @@
 #### path ####
-path_to_MS =/data/project_1/TAR/K_band/
+path_to_MS =/path/to/ms_data/
 #
 ### visibilities ### 
 vis = [vis1.ms,vis2.ms,...]
 field = 0
-#
-### plotms  ### 
-avgtime = 1e10
-#
 #
 ### Frequency_File ### 
 molecule = CH3OH.tsv

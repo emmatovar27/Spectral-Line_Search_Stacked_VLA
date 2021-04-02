@@ -2,7 +2,7 @@
 
 # Installation and Configuration 
 
-**This version of the program runs in python 2.X and CASA 5.X**
+**This version of the program runs in python 2.X and CASA 5.1 or higher**
 
 The program will be updated for python 3.X and CASA 6.X
 
@@ -38,7 +38,7 @@ execfile('main_script.py')
 
 ### Imaging generation
 
-The program will use the default  settings for each source that you selected. The output of the images will be located at /Output/'band'/'Source Name'
+The program will use the default  settings for each source that you selected. The output of the images will be located at /Output/'Source Name'
 
 
 # Splatalogue - Files

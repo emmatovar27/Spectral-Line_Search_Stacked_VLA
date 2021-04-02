@@ -241,6 +241,7 @@ def create_img(spws,fields,mySDM,new_path):
         if not os.path.exists(new_path+spw_to_do+'.image'):
             print("Did not Found -> Start Image")
             inp(tclean)
+            print("Image Created {0:} out of {1:}".format(i,len(spws)))
             go(tclean)
             max_min(imagename+'.image')
         else:
@@ -327,7 +328,7 @@ def main():
 
         #Stacking detected lines
 
-        if parameters_dict['Stacking']['stack_boolean']=="True":
+        if parameters_dict['Stacking']['stack_boolean']==True:
             temp=[]
             temp2=[]
             for cube in images_cube:
@@ -345,7 +346,7 @@ def main():
                         temp2.append(name)
             images_cube=temp2
             print( images_cube)
-            images_cube.append(new_path)
+            images_cube.append(tc_path)
             
             #Stacking Cubes
             execfile("stacking_module.py",globals())
