@@ -2,10 +2,10 @@ import os
 import glob
 import numpy as np
 import csv
+import sys
 
 
 def chans_rm_continuum(cube_input):
-    global imstat,default
     new_path=cube_input[-1]
     del(cube_input[-1])
     #Stats for each cube
@@ -63,54 +63,44 @@ def chans_rm_continuum(cube_input):
 
 
 
-def stack(cube_input):
+def stack(cube_input):                
     new_path=cube_input[-1]
     channels =chans_rm_continuum(cube_input)
-    del(cube_input[-1])
-    global default
-    global imagename
-    global linefile
-    global contfile
-    global chans
-    global output
-    global template
-    global asvelocity
-    global overwrite
-    global mode
-    global expr
-    global outfile
-    global fitorder
-    global axes
+    
+ 
     ## Remove continuum: this is better if done in the UV plane before tclean
     cube =[]
     for i in range(len(cube_input)):
         spw_to=cube_input[i]
         if not os.path.exists(new_path+spw_to+'.NC'):
-            default(imcontsub)
-            imagename = new_path+cube_input[i]
             linefile = new_path +cube_input[i]+'.NC'
-            contfile = new_path+cube_input[i]+'.C'            
-            chans = channels[i] #this is cube dependent
+            imcontsub(
+            imagename = new_path+cube_input[i]
+            ,linefile = new_path +cube_input[i]+'.NC'
+            ,contfile = new_path+cube_input[i]+'.C'            
+            ,chans = channels[i] #this is cube dependent
             #fitorder=1
-            inp(imcontsub)
-            imcontsub()
+            )
+            
             cube.append(linefile)
         else:
             linefile = new_path+cube_input[i]+'.NC' 
             cube.append(linefile) 
+    print(len(cube))
+    if len(cube) == 1:
+        raise SystemExit
 
     #regrid spectrum, to be able to average them.
     cube_to_stack = [cube[0]]
     for i in range(len(cube)-1):
-        default(imregrid)
-        imagename = cube[i+1]
-        template = cube[0]
         output = imagename +'.imregrid'
+        imregrid(
+        imagename = cube[i+1]
+        ,template = cube[0]
+        ,output = imagename +'.imregrid'
         #axes=3
-        asvelocity = True
-        overwrite = True
-        inp(imregrid)
-        imregrid()
+        ,asvelocity = True
+        ,overwrite = True)
         cube_to_stack.append(output)
     # Get RMS of the cubes
     imstat_cube = []
@@ -131,17 +121,16 @@ def stack(cube_input):
     ## Stack Cubes
     stacked_image = new_path+'stacked_cube.image'
     #os.system('rm -r -f '+stacked_image)
-    default(immath)
-    imagename = cube_to_stack
-    mode = 'evalexpr'
-    outfile = stacked_image
-    expr = '(IM0*'+str(weights[0])
+    ex = '(IM0*'+str(weights[0]) 
     for i in range(len(weights)-1):
-        expr = expr + ' + IM'+str(i+1)+'*'+str(weights[i+1])
-    expr = expr + ')'
-
-    inp(immath)
-    immath()
+        ex = ex + ' + IM'+str(i+1)+'*'+str(weights[i+1])
+    ex = ex + ')'
+    immath(
+    imagename = cube_to_stack
+    ,mode = 'evalexpr'
+    ,outfile = stacked_image
+    ,expr = ex
+    )
     imstat_cube.append(imstat(new_path+'stacked_cube.image', box='50,50,300,300'))
     cube_to_stack.append("stacked_cube.image")
     for i in range(len(imstat_cube)):

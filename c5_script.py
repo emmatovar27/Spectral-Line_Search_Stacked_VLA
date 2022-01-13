@@ -337,7 +337,8 @@ def main():
                     images_cube.remove(cube)
                     print('Removed from the stacking %s' %cube)
                 else: 
-                 temp.append(int(cube[cube.find('(')+1:cube.find(')')]))
+                    temp.append(cube[cube.find('(')+1:cube.find(')')])
+                    #temp.append(int(filter(str.isdigit,cube))) 
             temp.sort(reverse=True)
             temp=[str(x) for x in temp]
             for n in temp:
